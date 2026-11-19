@@ -7,13 +7,15 @@ public class ManageTasksInputData {
     private final String taskId;
     private final String title;
     private final int estimatedMinutes;
-    private final LocalDateTime deadline;
+    private final String description;
+    private final boolean completed;
 
-    public ManageTasksInputData(String taskId, String title, int estimatedMinutes, LocalDateTime deadline) {
+    public ManageTasksInputData(String taskId, String title, int estimatedMinutes, String description) {
         this.taskId = taskId;
         this.title = title;
         this.estimatedMinutes = estimatedMinutes;
-        this.deadline = deadline;
+        this.description = description;
+        this.completed = false;
     }
 
     // getters
@@ -29,7 +31,9 @@ public class ManageTasksInputData {
         return estimatedMinutes;
     }
 
-    public LocalDateTime getDeadline() {
-        return deadline;
+    public String getDescription() {
+        return description;
     }
+
+    public boolean getCompleted() {return completed; }
 }
