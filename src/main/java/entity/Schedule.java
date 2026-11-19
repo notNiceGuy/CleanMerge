@@ -29,6 +29,18 @@ public class Schedule {
         this.timeBlocks = new ArrayList<>();
     }
     public void addTimeBlock(TimeBlock timeBlock){
+        if (timeBlock instanceof Event) {
+            addEvent((Event) timeBlock);
+        }
+        else if (timeBlock instanceof FocusBlock) {
+            addFocusBlock((FocusBlock) timeBlock);
+        }
+        else{
+            throw new IllegalArgumentException("Invalid time block type, must be either Event or FocusBlock");
+        }
+    }
+
+    private void addEvent(Event timeBlock){
         // Precondition: The caller must add a timeBlock that does not come before this.start and this.end
         if (timeBlocks.isEmpty()){
             timeBlocks.add(timeBlock);
@@ -42,7 +54,7 @@ public class Schedule {
             // handles the case where the inserted timeBlock is in between two other timeBlocks
             for (int i = 0; i < timeBlocks.size() - 1; i++){
                 if (timeBlock.isAfterUnstrict(timeBlocks.get(i)) &&
-                timeBlock.isBeforeUnstrict(timeBlocks.get(i+1))){
+                        timeBlock.isBeforeUnstrict(timeBlocks.get(i+1))){
                     timeBlocks.add(i+1, timeBlock);
                     return;
                 }
@@ -57,6 +69,36 @@ public class Schedule {
             throw new IllegalArgumentException("The argument has time conflict with other timeblocks within the schedule");
         }
     }
+    private void addFocusBlock(FocusBlock timeBlock){
+        // Precondition: The caller must add a timeBlock that does not come before this.start and this.end
+        if (timeBlocks.isEmpty()){
+            timeBlocks.add(timeBlock);
+        }
+        else if (checkValidAdd(timeBlock)){
+            // edge case: the inserted timeBlock happens to be before every other timeBlock
+            if (timeBlock.isBefore(timeBlocks.get(0))){
+                timeBlocks.add(0, timeBlock);
+                return;
+            }
+            // handles the case where the inserted timeBlock is in between two other timeBlocks
+            for (int i = 0; i < timeBlocks.size() - 1; i++){
+                if (timeBlock.isAfter(timeBlocks.get(i)) &&
+                        timeBlock.isBefore(timeBlocks.get(i+1))){
+                    timeBlocks.add(i+1, timeBlock);
+                    return;
+                }
+            }
+            // edge case: the inserted timeBlock happens to be after every other timeBlock
+            if (timeBlock.isAfter(timeBlocks.get(timeBlocks.size() - 1))) {
+                timeBlocks.add(timeBlocks.size() - 1, timeBlock);
+                // return;
+            }
+        }
+        else{
+            throw new IllegalArgumentException("The argument has time conflict with other timeblocks within the schedule");
+        }
+    }
+
     private boolean checkValidAdd(TimeBlock timeBlock){
         for (TimeBlock currTimeBlock : timeBlocks){
             if (timeBlock.overlaps(currTimeBlock)){
