@@ -50,7 +50,7 @@ public class Schedule {
             // edge case: the inserted timeBlock happens to be after every other timeBlock
             if (timeBlock.getStart().isAfter(timeBlocks.get(timeBlocks.size() - 1).getStart())) {
                 timeBlocks.add(timeBlocks.size() - 1, timeBlock);
-//                return;
+                // return;
             }
         }
         else{
