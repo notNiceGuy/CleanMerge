@@ -29,6 +29,9 @@ public class Schedule {
         this.timeBlocks = new ArrayList<>();
     }
     public void addTimeBlock(TimeBlock timeBlock){
+        if (timeBlock.getStart().isBefore(start) || timeBlock.getEnd().isAfter(end)) {
+            throw new IllegalArgumentException("Time block is outside the schedule's range");
+        }
         if (timeBlock instanceof Event) {
             addEvent((Event) timeBlock);
         }
@@ -61,7 +64,7 @@ public class Schedule {
             }
             // edge case: the inserted timeBlock happens to be after every other timeBlock
             if (timeBlock.isAfterUnstrict(timeBlocks.get(timeBlocks.size() - 1))) {
-                timeBlocks.add(timeBlocks.size() - 1, timeBlock);
+                timeBlocks.add(timeBlock);
                 // return;
             }
         }
@@ -90,9 +93,11 @@ public class Schedule {
             }
             // edge case: the inserted timeBlock happens to be after every other timeBlock
             if (timeBlock.isAfter(timeBlocks.get(timeBlocks.size() - 1))) {
-                timeBlocks.add(timeBlocks.size() - 1, timeBlock);
-                // return;
+                timeBlocks.add(timeBlock);
+                return;
             }
+            // no slot left a gap on both sides
+            throw new IllegalArgumentException("A focus block needs a break before and after it");
         }
         else{
             throw new IllegalArgumentException("The argument has time conflict with other timeblocks within the schedule");
@@ -122,25 +127,25 @@ public class Schedule {
     // Swaps an existing block for an updated one (e.g. FocusBlock.movedTo for use case 4).
 // If the new block conflicts, the old one is put back and the exception is rethrown.
     public void replaceTimeBlock(String blockId, TimeBlock updated) {
-        // Find the block with the matching id
-        TimeBlock old = null;
-        for (TimeBlock b : timeBlocks) {
-            if (b.getId().equals(blockId)) {
-                old = b;
+        // Find the index of the block with the matching id
+        int oldIndex = -1;
+        for (int i = 0; i < timeBlocks.size(); i++) {
+            if (timeBlocks.get(i).getId().equals(blockId)) {
+                oldIndex = i;
                 break;
             }
         }
-        if (old == null) {
+        if (oldIndex == -1) {
             throw new IllegalArgumentException("No block with id " + blockId);
         }
 
         // Take the old block out so it doesn't count as a conflict with the updated one
-        timeBlocks.remove(old);
+        TimeBlock old = timeBlocks.remove(oldIndex);
         try {
             addTimeBlock(updated);
         } catch (IllegalArgumentException e) {
-            // The updated block didn't fit, so put the old one back and pass the error on
-            addTimeBlock(old);
+            // The updated block didn't fit, so put the old one back exactly where it was
+            timeBlocks.add(oldIndex, old);
             throw e;
         }
     }
