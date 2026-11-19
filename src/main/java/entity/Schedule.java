@@ -35,20 +35,20 @@ public class Schedule {
         }
         else if (checkValidAdd(timeBlock)){
             // edge case: the inserted timeBlock happens to be before every other timeBlock
-            if (timeBlock.getEnd().isBefore(timeBlocks.get(0).getStart())){
+            if (timeBlock.isBeforeUnstrict(timeBlocks.get(0))){
                 timeBlocks.add(0, timeBlock);
                 return;
             }
             // handles the case where the inserted timeBlock is in between two other timeBlocks
             for (int i = 0; i < timeBlocks.size() - 1; i++){
-                if (timeBlock.getStart().isAfter(timeBlocks.get(i).getEnd()) &&
-                timeBlock.getEnd().isBefore(timeBlocks.get(i+1).getStart())){
+                if (timeBlock.isAfterUnstrict(timeBlocks.get(i)) &&
+                timeBlock.isBeforeUnstrict(timeBlocks.get(i+1))){
                     timeBlocks.add(i+1, timeBlock);
                     return;
                 }
             }
             // edge case: the inserted timeBlock happens to be after every other timeBlock
-            if (timeBlock.getStart().isAfter(timeBlocks.get(timeBlocks.size() - 1).getStart())) {
+            if (timeBlock.isAfterUnstrict(timeBlocks.get(timeBlocks.size() - 1))) {
                 timeBlocks.add(timeBlocks.size() - 1, timeBlock);
                 // return;
             }
