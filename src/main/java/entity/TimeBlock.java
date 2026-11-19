@@ -47,6 +47,16 @@ public abstract class TimeBlock {
         return start.isBefore(otherEnd) && otherStart.isBefore(end);
     }
 
+    // True if this block ends at or before other starts
+    public boolean isBeforeUnstrict(TimeBlock other) {
+        return !end.isAfter(other.getStart());
+    }
+
+    // True if this block starts at or after other ends
+    public boolean isAfterUnstrict(TimeBlock other) {
+        return !start.isBefore(other.getEnd());
+    }
+
     // Returns whether two TimeBlock objects overlap
     public boolean overlaps(TimeBlock other) {
         return overlaps(other.getStart(), other.getEnd());
