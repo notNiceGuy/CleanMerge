@@ -8,7 +8,7 @@ public class Task {
     private final String title;
     private final int estimatedMinutes;
     private final String description; // optional, "" if user didn't input any
-    private final String completed; // has to be "NA", "YES" or "NO"
+    private final String completed; // has to be "NA", "YES" or "NO" stripped and in uppercase
 
     public Task(String id, String title, int estimatedMinutes, String description, String completed) {
         if (id == null) {
@@ -20,7 +20,8 @@ public class Task {
         if (estimatedMinutes <= 0) {
             throw new IllegalArgumentException("Estimated time must be greater than 0 minutes");
         }
-        if (!(completed.equals("na") || completed.equals("Yes") || completed.equals("NO"))) {
+        String status = completed.strip().toUpperCase();
+        if (!(status.equals("NA") || status.equals("YES") || status.equals("NO"))) {
             throw new IllegalArgumentException("Completed must be \"NA\", \"YES\" or \"NO\"");
         }
         this.id = id;
@@ -31,7 +32,7 @@ public class Task {
         } else {
             this.description = description.strip();
         }
-        this.completed = completed;
+        this.completed = status;
     }
 
     // getters
