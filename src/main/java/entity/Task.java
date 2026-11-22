@@ -21,8 +21,8 @@ public class Task {
             throw new IllegalArgumentException("Estimated time must be greater than 0 minutes");
         }
         String status = completed.strip().toUpperCase();
-        if (!(status.equals("NA") || status.equals("YES") || status.equals("NO"))) {
-            throw new IllegalArgumentException("Completed must be \"NA\", \"YES\" or \"NO\"");
+        if (!(status.equals("YES") || status.equals("NO"))) {
+            throw new IllegalArgumentException("Completed must be \"YES\" or \"NO\"");
         }
         this.id = id;
         this.title = title.strip();
