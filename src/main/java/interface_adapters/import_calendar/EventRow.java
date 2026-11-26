@@ -6,15 +6,15 @@ public class EventRow {
     private final String description;
     private final String startTime;
     private final String endTime;
-    private final String durationTime;
+    private final String duration;
 
-    public EventRow(String eventId, String title, String description, String startTime, String endTime, String durationTime) {
+    public EventRow(String eventId, String title, String description, String startTime, String endTime, String duration) {
         this.eventId = eventId;
         this.title = title;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.durationTime = durationTime;
+        this.duration = duration;
     }
 
     public String getEventId() {
@@ -37,7 +37,7 @@ public class EventRow {
         return endTime;
     }
 
-    public String getDurationTime() {
-        return durationTime;
+    public String getDuration() {
+        return duration;
     }
 }
