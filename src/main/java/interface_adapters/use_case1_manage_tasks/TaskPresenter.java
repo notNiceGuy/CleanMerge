@@ -51,6 +51,9 @@ public class TaskPresenter implements ManageTasksOutputBoundary {
         if (completed.equals("YES")) {
             return "Done";
         }
-        return "Not done";
+        if (completed.equals("NO")) {
+            return "Not done";
+        }
+        return "N/A";   // "NA"
     }
 }
