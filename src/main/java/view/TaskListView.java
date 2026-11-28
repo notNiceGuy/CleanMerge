@@ -16,7 +16,7 @@ import java.util.List;
 public class TaskListView extends JPanel implements PropertyChangeListener {
 
     private static final String[] COLUMNS = {"Task", "Time", "Status", "Description"}; // column headings shown on top of table
-    private static final String[] STATUSES = {"NO", "YES"};
+    private static final String[] STATUSES = {"NA", "NO", "YES"};
 
     private final ViewModel<TaskListState> viewModel;
     private final TaskController controller;

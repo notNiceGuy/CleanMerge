@@ -9,7 +9,7 @@ public class TaskData {
     private final String title;
     private final int estimatedMinutes;
     private final String description;     // "" if none (Task never stores null)
-    private final String completed;       // "YES" or "NO", always in capitals
+    private final String completed;       // "NA", "YES" or "NO", always in capitals
 
     public TaskData(String id, String title, int estimatedMinutes, String description, String completed) {
         this.id = id;
