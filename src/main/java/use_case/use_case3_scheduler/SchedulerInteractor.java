@@ -1,18 +1,33 @@
 package use_case.use_case3_scheduler;
 
 import entity.Schedule;
+import use_case.EventDataAccessInterface;
+import use_case.ScheduleDataAccessInterface;
+import use_case.TaskDataAccessInterface;
 
-public class SchedulerInteractor {
+public class SchedulerInteractor implements SchedulerInputBoundary {
 
-    private int focusLength;
-    private Schedule schedule;
+    private final TaskDataAccessInterface taskDataAccess;
+    private final EventDataAccessInterface eventDataAccess;
+    private final ScheduleDataAccessInterface scheduleDataAccess;
+    private final SchedulerOutputBoundary presenter;
 
+    public SchedulerInteractor(TaskDataAccessInterface taskDataAccess,
+                               EventDataAccessInterface eventDataAccess,
+                               ScheduleDataAccessInterface scheduleDataAccess,
+                               SchedulerOutputBoundary presenter) {
 
-    public void ScheduleInteractor(int focusLength, Schedule schedule) {
+        this.taskDataAccess = taskDataAccess;
+        this.eventDataAccess = eventDataAccess;
+        this.scheduleDataAccess = scheduleDataAccess;
+        this.presenter = presenter;
 
-        this.focusLength = focusLength;
-        this.schedule = schedule;
+    }
 
+        @Override
+        public void generateSchedule(SchedulerInputData input) {
+            // ...
+        }
     }
 
 }
